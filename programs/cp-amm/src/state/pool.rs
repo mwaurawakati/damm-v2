@@ -115,20 +115,18 @@ pub struct Pool {
     pub token_b_vault: Pubkey,
     /// Whitelisted vault to be able to buy pool before activation_point
     pub whitelisted_vault: Pubkey,
-    /// partner
-    pub partner: Pubkey,
+    /// padding, previously partner pubkey, be careful when using this field
+    pub padding_0: [u8; 32],
     /// liquidity share
     pub liquidity: u128,
     /// padding, previous reserve amount, be careful to use that field
-    pub _padding: u128,
+    pub padding_1: u128,
     /// protocol a fee
     pub protocol_a_fee: u64,
     /// protocol b fee
     pub protocol_b_fee: u64,
-    /// partner a fee
-    pub partner_a_fee: u64,
-    /// partner b fee
-    pub partner_b_fee: u64,
+    // padding for future use
+    pub padding_2: u128,
     /// min price
     pub sqrt_min_price: u128,
     /// max price
@@ -149,10 +147,10 @@ pub struct Pool {
     pub collect_fee_mode: u8,
     /// pool type
     pub pool_type: u8,
-    /// pool version, 0: max_fee is still capped at 50%, 1: max_fee is capped at 99%
-    pub version: u8,
+    /// pool fee version, 0: max_fee is still capped at 50%, 1: max_fee is capped at 99%
+    pub fee_version: u8,
     /// padding
-    pub _padding_0: u8,
+    pub padding_3: u8,
     /// cumulative
     pub fee_a_per_liquidity: [u8; 32], // U256
     /// cumulative
@@ -163,11 +161,20 @@ pub struct Pool {
     pub metrics: PoolMetrics,
     /// pool creator
     pub creator: Pubkey,
+    /// token a amount
+    pub token_a_amount: u64,
+    /// token b amount
+    pub token_b_amount: u64,
+    /// layout version: version 0: haven't track token_a_amount and token_b_amount, version 1: track token_a_amount and token_b_amount
+    pub layout_version: u8,
     /// Padding for further use
-    pub _padding_1: [u64; 6],
+    pub padding_4: [u8; 7],
+    /// Padding for further use
+    pub padding_5: [u64; 3],
     /// Farming reward information
     pub reward_infos: [RewardInfo; NUM_REWARDS],
 }
+
 
 const_assert_eq!(Pool::INIT_SPACE, 1104);
 
